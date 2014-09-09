@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=kitworkingtimeapp
+Name=Working Time Calculator
 Exec=qmlscene $@ main.qml
-Icon=kitworkingtimeapp.png
+Icon=workingtimeapp.png
 Terminal=false
 Type=Application
 X-Ubuntu-Touch=true

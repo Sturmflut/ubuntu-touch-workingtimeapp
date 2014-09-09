@@ -10,7 +10,7 @@ MainView {
     objectName: "mainView"
 
     // Note! applicationName needs to match the "name" field of the click manifest
-    applicationName: "com.ubuntu.developer.sturmflut.kitworkingtimeapp"
+    applicationName: "com.ubuntu.developer.sturmflut.workingtimeapp"
 
     /*
      This property enables the application to change orientation
@@ -25,14 +25,13 @@ MainView {
     height: units.gu(75)
 
     Page {
-        title: i18n.tr("Simple")
+        title: i18n.tr("Working time calculator")
 
-        Grid {
-            spacing: units.gu(1)
-
-            columns: 2
+        Column {
+            anchors.fill: parent
 
             Label {
+                id: operationLabel
                 text: i18n.tr("Calculate for:")
             }
 
@@ -40,24 +39,94 @@ MainView {
                 ListModel {
                     id: operationModel
 
-                    ListElement { name: "Start time"   }
-                    ListElement { name: "End time"     }
-                    ListElement { name: "Working time" }
+                    ListElement { name: "End time"   }
+                    ListElement { name: "Working time"     }
+                    ListElement { name: "Start time" }
                 }
 
                 id: operationSelector
                 model: operationModel
             }
 
-            Label {
-                text: i18n.tr("Start:")
+            Grid {
+                spacing: units.gu(1)
+
+                columns: 2
+
+                Label {
+                    text: i18n.tr("Start:")
+                }
+
+                Button {
+                    id: startButton
+                    property date date: "2000-01-01 08:00:00"
+                    text: Qt.formatTime(date, "hh:mm")
+                    onClicked: PickerPanel.openDatePicker(startButton, "date", "Hours:Minutes")
+                }
+
+                Label {
+                    text: i18n.tr("Working:")
+                }
+
+                Button {
+                    id: workingButton
+                    property date date: "2000-01-01 10:00:00"
+                    text: Qt.formatTime(date, "hh:mm")
+                    onClicked: PickerPanel.openDatePicker(workingButton, "date", "Hours:Minutes")
+                }
+
+                Label {
+                    text: i18n.tr("Rest:")
+                }
+
+                Button {
+                    id: restButton
+                    property date date: "2000-01-01 01:15:00"
+                    text: Qt.formatTime(date, "hh:mm")
+                    onClicked: PickerPanel.openDatePicker(restButton, "date", "Hours:Minutes")
+                }
+
+                Label {
+                    text: i18n.tr("End:")
+                }
+
+                Button {
+                    id: endButton
+                    property date date: "2000-01-01 17:00:00"
+                    text: Qt.formatTime(date, "hh:mm")
+                    onClicked: PickerPanel.openDatePicker(endButton, "date", "Hours:Minutes")
+                }
             }
 
             Button {
-                id: startButton
-                property date date: new Date()
-                text: Qt.formatTime(date, "hh:mm")
-                onClicked: PickerPanel.openDatePicker(startButton, "date", "Hours:Minutes")
+                text: i18n.tr("Calculate")
+
+                onClicked: {
+                    // Calculate  End time
+                    if(operationSelector.selectedIndex == 0)
+                    {
+                        var result = new Date("2000-01-01 00:00:00")
+                        result.setHours(startButton.date.getHours() + workingButton.date.getHours() + restButton.date.getHours())
+                        result.setMinutes(startButton.date.getMinutes() + workingButton.date.getMinutes() + restButton.date.getMinutes())
+                        endButton.date = result
+                    }
+                    // Calculate Working time
+                    if(operationSelector.selectedIndex == 1)
+                    {
+                        var result = new Date("2000-01-01 00:00:00")
+                        result.setHours(endButton.date.getHours() - restButton.date.getHours() - startButton.date.getHours())
+                        result.setMinutes(endButton.date.getMinutes() - restButton.date.getMinutes() - startButton.date.getMinutes())
+                        workingButton.date = result
+                    }
+                    // Calculate Start time
+                    if(operationSelector.selectedIndex == 2)
+                    {
+                        var result = new Date("2000-01-01 00:00:00")
+                        result.setHours(endButton.date.getHours() - restButton.date.getHours() - workingButtonButton.date.getHours())
+                        result.setMinutes(endButton.date.getMinutes() - restButton.date.getMinutes() - workingButton.date.getMinutes())
+                        startButton.date = result
+                    }
+                }
             }
         }
     }

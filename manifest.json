@@ -1,15 +1,15 @@
 {
     "architecture": "all",
-    "description": "description of kitworkingtimeapp",
+    "description": "Calculates your working time",
     "framework": "ubuntu-sdk-14.10-dev2",
     "hooks": {
-        "kitworkingtimeapp": {
-            "apparmor": "kitworkingtimeapp.apparmor",
-            "desktop": "kitworkingtimeapp.desktop"
+        "workingtimeapp": {
+            "apparmor": "workingtimeapp.apparmor",
+            "desktop": "workingtimeapp.desktop"
         }
     },
     "maintainer": "Sturm Flut <sturmflut@lieberbiber.de>",
-    "name": "com.ubuntu.developer.sturmflut.kitworkingtimeapp",
-    "title": "kitworkingtimeapp",
-    "version": "0.1"
+    "name": "com.ubuntu.developer.sturmflut.workingtimeapp",
+    "title": "Working Time Calculator",
+    "version": "0.2"
 }
